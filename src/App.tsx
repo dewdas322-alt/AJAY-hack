@@ -239,7 +239,7 @@ export default function App() {
     realHistory1mRef.current = realHistory1m;
   }, [realHistory1m]);
 
-  // Handle Level Stage & Loss Streak Updates (Guaranteed Under-2 Level Recovery Cycle when Auto-Adjustment is active)
+  // Handle Level Stage & Loss Streak Updates (Strictly Under Level 2-3 Jackpot Progression)
   const updateLevelStage = useCallback((mode: WinGoMode, isWin: boolean) => {
     if (mode === '30s') {
       if (isWin) {
@@ -249,10 +249,8 @@ export default function App() {
         const nextLoss = consecutiveLosses30sRef.current + 1;
         setConsecutiveLosses30s(nextLoss);
         setMaxLossStreak30s(prev => Math.max(prev, nextLoss));
-        // When Auto-Adjustment is enabled: strictly Level 1 -> Level 2 (3X) -> Reset Level 1 (Under 2 Level Fixed Win)
-        const nextStage = autoAdjustmentEnabled 
-          ? (nextLoss === 1 ? 2 : 1)
-          : (nextLoss === 1 ? 2 : nextLoss === 2 ? 3 : 1);
+        // Under Level 2-3 progression: Level 1 -> Level 2 (3X) -> Level 3 (8X) -> Level 1 reset
+        const nextStage = nextLoss === 1 ? 2 : nextLoss === 2 ? 3 : 1;
         setLevelStage30s(nextStage);
       }
     } else {
@@ -263,15 +261,13 @@ export default function App() {
         const nextLoss = consecutiveLosses1mRef.current + 1;
         setConsecutiveLosses1m(nextLoss);
         setMaxLossStreak1m(prev => Math.max(prev, nextLoss));
-        const nextStage = autoAdjustmentEnabled 
-          ? (nextLoss === 1 ? 2 : 1)
-          : (nextLoss === 1 ? 2 : nextLoss === 2 ? 3 : 1);
+        const nextStage = nextLoss === 1 ? 2 : nextLoss === 2 ? 3 : 1;
         setLevelStage1m(nextStage);
       }
     }
-  }, [autoAdjustmentEnabled]);
+  }, []);
 
-  // Accurate Evaluation of round result according to official WinGo rules
+  // Accurate Evaluation of round result according to official WinGo rules (100% Number Jackpot Win/Loss)
   const evaluatePastPrediction = useCallback((
     pastPred: ActivePrediction,
     actualItem: HistoryItem,
@@ -288,27 +284,17 @@ export default function App() {
     const actualSize: 'BIG' | 'SMALL' = actualNum >= 5 ? 'BIG' : 'SMALL';
     
     // Official WinGo Color Rules:
-    // 0: Red + Violet (Red wins, Violet wins)
-    // 5: Green + Violet (Green wins, Violet wins)
-    // 1, 3, 7, 9: Green (Pure Green)
-    // 2, 4, 6, 8: Red (Pure Red)
     const isActualGreen = [1, 3, 5, 7, 9].includes(actualNum);
-    const isActualRed = [0, 2, 4, 6, 8].includes(actualNum);
-
     let actualColorLabel: 'GREEN' | 'RED' | 'RED-VIOLET' | 'GREEN-VIOLET' | 'VIOLET' = 'RED';
     if (actualNum === 0) actualColorLabel = 'RED-VIOLET';
     else if (actualNum === 5) actualColorLabel = 'GREEN-VIOLET';
     else if (isActualGreen) actualColorLabel = 'GREEN';
     else actualColorLabel = 'RED';
 
-    // 1. Direct 3 High-Probability Numbers Hit Check (9x Jackpot)
+    // 1. Direct 3 High-Probability Numbers Hit Check (9x Jackpot Hit)
     const numberHit = (pastPred.predictedNumbers && pastPred.predictedNumbers.includes(actualNum)) ||
       (pastPred.highProbNumbers && pastPred.highProbNumbers.includes(actualNum)) ||
-      (pastPred.sameSideNumber !== undefined && pastPred.sameSideNumber === actualNum) ||
-      (pastPred.oppositeNumber !== undefined && pastPred.oppositeNumber === actualNum);
-
-    // 2. Size Hit
-    const sizeHit = (pastPred.predictedSize === actualSize);
+      (pastPred.sameSideNumber !== undefined && pastPred.sameSideNumber === actualNum);
 
     const currentLevel = mode === '30s' ? levelStage30sRef.current : levelStage1mRef.current;
     const isHold = pastPred.predictionType === 'HOLD' || pastPred.targetPick === 'HOLD';
@@ -321,28 +307,15 @@ export default function App() {
       isJackpot = false;
       statusLabel = 'CAPITAL HOLD';
     } else if (numberHit) {
-      // Direct 3 High-Probability Number Strike Hit (9x Payout)
+      // Direct 3 High-Probability Number Strike Hit (9x Payout) - JACKPOT WIN
       isJackpot = true;
       isWin = true;
-      statusLabel = `3-NUMBER HIT #${actualNum} (9x)`;
-    } else if (pastPred.predictionType === 'SIZE' || pastPred.targetPick === 'BIG' || pastPred.targetPick === 'SMALL') {
-      // User/AI Primary Target is strictly SIZE
-      if (sizeHit) {
-        isWin = true;
-        statusLabel = `WIN (SIZE ${pastPred.predictedSize})`;
-      } else {
-        isWin = false;
-        statusLabel = `LOSS (SIZE ${actualSize})`;
-      }
+      statusLabel = `JACKPOT WIN #${actualNum} (9x)`;
     } else {
-      // Fallback verification when targetPick is undefined: verify primary predictedSize
-      if (sizeHit) {
-        isWin = true;
-        statusLabel = `WIN (SIZE ${pastPred.predictedSize})`;
-      } else {
-        isWin = false;
-        statusLabel = `LOSS (SIZE ${actualSize})`;
-      }
+      // 100% Number-only evaluation: No size prediction win/loss
+      isJackpot = false;
+      isWin = false;
+      statusLabel = `LOSS (DRAW #${actualNum})`;
     }
 
     if (!isHold && isLiveRealtime) {

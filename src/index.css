@@ -201,6 +201,45 @@ body {
   40%, 80% { transform: translateX(8px) rotate(0.5deg); }
 }
 
+/* Quantum Neural Engine Subtle Pulse & Stream Scan Keyframes */
+@keyframes quantumNeuralPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.45), 0 0 38px rgba(255, 42, 133, 0.25), inset 0 0 16px rgba(255, 215, 0, 0.15);
+    border-color: rgba(255, 215, 0, 0.75);
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.3));
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(0, 255, 204, 0.75), 0 0 55px rgba(255, 215, 0, 0.45), inset 0 0 24px rgba(0, 255, 204, 0.28);
+    border-color: rgba(0, 255, 204, 0.9);
+    filter: drop-shadow(0 0 16px rgba(0, 255, 204, 0.5));
+  }
+}
+
+.animate-quantum-pulse {
+  animation: quantumNeuralPulse 2.8s ease-in-out infinite;
+}
+
+@keyframes neuralDataStreamBeam {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.6;
+  }
+  70% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(200%);
+    opacity: 0;
+  }
+}
+
+.animate-neural-stream {
+  animation: neuralDataStreamBeam 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
 /* Custom Cyber/Samurai Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

@@ -269,19 +269,23 @@ export const HomeDashboardView: React.FC<HomeDashboardViewProps> = ({
       {/* ========================================================================= */}
       <div 
         id="hero-prediction-card"
-        className="w-full samurai-glass-crimson rounded-3xl p-4 sm:p-5 border-2 border-[#ffd700]/70 shadow-[0_0_45px_rgba(255,215,0,0.35)] relative overflow-hidden"
+        className="w-full samurai-glass-crimson rounded-3xl p-4 sm:p-5 border-2 border-[#ffd700]/70 shadow-[0_0_45px_rgba(255,215,0,0.35)] relative overflow-hidden animate-quantum-pulse"
       >
         {/* Subtle Background Radial Light & Laser Slash Beam */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[#ffd700]/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent pointer-events-none [animation:slashBeam_4s_infinite]" />
+        
+        {/* Quantum Neural Engine Active Stream Scanner */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#00ffcc] to-transparent animate-neural-stream pointer-events-none opacity-80" />
 
         {/* Card Header: Target Badge & Period */}
         <div className="flex items-center justify-between mb-3 relative z-10">
           <div className="px-3.5 py-1.5 rounded-full font-orbitron text-xs font-black tracking-widest flex items-center gap-1.5 shadow-lg border bg-gradient-to-r from-[#ffd700] via-[#ffaa00] to-[#ff007f] text-black border-[#ffd700] shadow-[0_0_20px_rgba(255,215,0,0.6)]">
+            <span className="w-2 h-2 rounded-full bg-black animate-ping" />
             <Target size={13} className="text-black stroke-[3]" />
             <span>
               {isDecrypting 
-                ? 'SCANNING 10-100 COMBOS...' 
+                ? 'QUANTUM NEURAL ENGINE SCANNING...' 
                 : '3 HIGH-PROBABILITY NUMBERS LOCK'}
             </span>
           </div>
@@ -413,25 +417,25 @@ export const HomeDashboardView: React.FC<HomeDashboardViewProps> = ({
       </div>
 
       {/* ========================================================================= */}
-      {/* CARD 3: 100-RESULT MASTER SIZE & SAME-SIDE NUMBER BETTING CONSOLE         */}
+      {/* CARD 3: QUANTUM NEURAL ENGINE: 3-NUMBER DIRECT 9x JACKPOT CONSOLE         */}
       {/* ========================================================================= */}
       <div 
         id="color-ball-selector-card"
-        className="w-full samurai-glass-panel rounded-2xl p-3 sm:p-4 border-2 border-[#ff2a85]/40 shadow-[0_4px_25px_rgba(255,42,133,0.2)] flex flex-col gap-3 relative"
+        className="w-full samurai-glass-panel rounded-2xl p-3 sm:p-4 border-2 border-[#ffd700]/50 shadow-[0_4px_30px_rgba(255,215,0,0.25)] flex flex-col gap-3 relative overflow-hidden"
       >
         {/* Top Target Indicator Bar */}
-        <div className="flex items-center justify-between pb-1 border-b border-pink-500/20 text-[10px] font-orbitron">
+        <div className="flex items-center justify-between pb-1 border-b border-[#ffd700]/25 text-[10px] font-orbitron">
           <div className="flex items-center gap-1.5 text-white font-bold">
-            <Target size={13} className="text-[#ffd700]" />
+            <Crown size={14} className="text-[#ffd700]" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-pink-200 to-[#ffd700]">
-              SIZE & SAME-SIDE NUMBER CONSOLE
+              QUANTUM 3-NUMBER JACKPOT CONSOLE
             </span>
           </div>
 
           <div className="flex items-center gap-1.5 text-[9px] font-mono-tech">
-            <span className="text-gray-400">AI TARGET:</span>
-            <span className="text-[#ffd700] font-black font-orbitron bg-black/80 px-2 py-0.5 rounded-full border border-[#ffd700]/50 shadow-[0_0_8px_#ffd700]">
-              {predictedSize} • SAME-SIDE #{sameSideNum} (9x)
+            <span className="text-gray-400">9x JACKPOT TARGET:</span>
+            <span className="text-[#ffd700] font-black font-orbitron bg-black/90 px-2 py-0.5 rounded-full border border-[#ffd700]/60 shadow-[0_0_12px_#ffd700]">
+              #{num1} • #{num2} • #{num3}
             </span>
           </div>
         </div>
@@ -443,77 +447,90 @@ export const HomeDashboardView: React.FC<HomeDashboardViewProps> = ({
               ROUND ENDING IN [0] [{padSec[1]}]
             </span>
             <span className="text-[10px] font-mono-tech text-pink-200 mt-1">
-              AI CALCULATING 100-DATA MASTER RESULT...
+              QUANTUM NEURAL ENGINE ANALYZING NEXT ROUND STRIKE...
             </span>
           </div>
         )}
 
-        {/* MASTER SIZE SELECTORS: BIG (5-9) vs SMALL (0-4) */}
-        <div className="grid grid-cols-2 gap-2.5">
-          {/* BIG BUTTON */}
+        {/* 3 HIGH-PROBABILITY JACKPOT PICKS QUICK ACTION DISPLAY */}
+        <div className="grid grid-cols-3 gap-2">
+          {/* APEX HERO #1 */}
           <button
             type="button"
-            onClick={() => setSelectedMultiplier('BIG')}
-            className={`py-3 px-2 rounded-2xl font-orbitron text-sm font-black tracking-wider transition-all cursor-pointer flex flex-col items-center justify-center gap-1 ${
-              predictedSize === 'BIG'
-                ? 'bg-gradient-to-r from-[#ffd700] via-[#ffaa00] to-[#ff007f] text-black shadow-[0_0_28px_rgba(255,215,0,0.9)] scale-[1.03] ring-2 ring-white'
-                : selectedMultiplier === 'BIG'
-                ? 'bg-amber-800 text-white ring-2 ring-amber-400'
-                : 'bg-black/80 text-gray-200 border border-pink-500/40 hover:bg-black'
+            onClick={() => setSelectedNumber(num1)}
+            className={`py-2 px-1 rounded-xl bg-gradient-to-b from-[#3a2500] via-[#201500] to-[#0a0700] border-2 border-[#ffd700] flex flex-col items-center justify-center transition-all cursor-pointer relative shadow-[0_0_18px_rgba(255,215,0,0.6)] ${
+              selectedNumber === num1 ? 'ring-2 ring-white scale-102' : 'hover:scale-102'
             }`}
           >
-            <div className="flex items-center gap-1.5">
-              <span>BIG</span>
-              <span className="text-[9px] font-mono font-normal opacity-90">[5, 6, 7, 8, 9]</span>
-            </div>
-            {predictedSize === 'BIG' && (
-              <span className="text-[8px] bg-black text-[#ffd700] px-2 py-0.5 rounded-full font-mono-tech border border-[#ffd700]/70 font-bold">
-                ★ 100-RESULT MASTER TARGET (FIX WIN)
-              </span>
-            )}
+            <span className="text-[7px] font-mono-tech font-black text-[#ffd700] tracking-wider">
+              #1 PRIMARY (9x)
+            </span>
+            <span className="font-orbitron text-2xl font-black text-[#ffd700] drop-shadow-[0_0_10px_#ffd700]">
+              #{num1}
+            </span>
+            <span className="text-[6.5px] font-mono-tech text-black bg-[#ffd700] px-1.5 py-0.2 rounded-full font-bold">
+              {conf1}% WIN
+            </span>
           </button>
 
-          {/* SMALL BUTTON */}
+          {/* COMBO #2 */}
           <button
             type="button"
-            onClick={() => setSelectedMultiplier('SMALL')}
-            className={`py-3 px-2 rounded-2xl font-orbitron text-sm font-black tracking-wider transition-all cursor-pointer flex flex-col items-center justify-center gap-1 ${
-              predictedSize === 'SMALL'
-                ? 'bg-gradient-to-r from-[#ff2a85] via-[#ff007f] to-[#800f4f] text-white shadow-[0_0_28px_rgba(255,42,133,0.9)] scale-[1.03] ring-2 ring-white'
-                : selectedMultiplier === 'SMALL'
-                ? 'bg-pink-800 text-white ring-2 ring-pink-400'
-                : 'bg-black/80 text-gray-200 border border-pink-500/40 hover:bg-black'
+            onClick={() => setSelectedNumber(num2)}
+            className={`py-2 px-1 rounded-xl bg-gradient-to-b from-[#00302b] via-[#001c19] to-[#000a09] border-2 border-[#00ffcc] flex flex-col items-center justify-center transition-all cursor-pointer relative shadow-[0_0_18px_rgba(0,255,204,0.5)] ${
+              selectedNumber === num2 ? 'ring-2 ring-white scale-102' : 'hover:scale-102'
             }`}
           >
-            <div className="flex items-center gap-1.5">
-              <span>SMALL</span>
-              <span className="text-[9px] font-mono font-normal opacity-90">[0, 1, 2, 3, 4]</span>
-            </div>
-            {predictedSize === 'SMALL' && (
-              <span className="text-[8px] bg-black text-pink-300 px-2 py-0.5 rounded-full font-mono-tech border border-pink-400/70 font-bold">
-                ★ 100-RESULT MASTER TARGET (FIX WIN)
-              </span>
-            )}
+            <span className="text-[7px] font-mono-tech font-black text-[#00ffcc] tracking-wider">
+              #2 SECONDARY (9x)
+            </span>
+            <span className="font-orbitron text-2xl font-black text-[#00ffcc] drop-shadow-[0_0_10px_#00ffcc]">
+              #{num2}
+            </span>
+            <span className="text-[6.5px] font-mono-tech text-black bg-[#00ffcc] px-1.5 py-0.2 rounded-full font-bold">
+              {conf2}% WIN
+            </span>
+          </button>
+
+          {/* HEDGE #3 */}
+          <button
+            type="button"
+            onClick={() => setSelectedNumber(num3)}
+            className={`py-2 px-1 rounded-xl bg-gradient-to-b from-[#350020] via-[#1d0012] to-[#0a0006] border-2 border-[#ff2a85] flex flex-col items-center justify-center transition-all cursor-pointer relative shadow-[0_0_18px_rgba(255,42,133,0.5)] ${
+              selectedNumber === num3 ? 'ring-2 ring-white scale-102' : 'hover:scale-102'
+            }`}
+          >
+            <span className="text-[7px] font-mono-tech font-black text-pink-300 tracking-wider">
+              #3 TERTIARY (9x)
+            </span>
+            <span className="font-orbitron text-2xl font-black text-[#ff2a85] drop-shadow-[0_0_10px_#ff2a85]">
+              #{num3}
+            </span>
+            <span className="text-[6.5px] font-mono-tech text-white bg-[#ff2a85] px-1.5 py-0.2 rounded-full font-bold">
+              {conf3}% WIN
+            </span>
           </button>
         </div>
 
-        {/* 2 Rows of Ultra-Realistic 3D Lottery Balls (0-4 and 5-9) with Same-Side Hero Lock */}
+        {/* 2 Rows of Ultra-Realistic 3D Lottery Balls (0-4 and 5-9) with Strike Highlighting */}
         <div className="flex flex-col gap-2 pt-1">
           <div className="flex items-center justify-between text-[9px] font-mono-tech text-gray-300 px-1">
-            <span>SAME-SIDE 9x NUMBER TARGETS:</span>
-            <span className="text-[#ffd700] font-bold">
-              {predictedSize === 'SMALL' ? 'SMALL SIDE ONLY: 0 - 4' : 'BIG SIDE ONLY: 5 - 9'}
+            <span className="flex items-center gap-1 text-[#ffd700] font-bold">
+              <Zap size={10} className="text-[#ffd700]" />
+              <span>DIRECT 9x NUMBER MATRIX (0 - 9):</span>
+            </span>
+            <span className="text-[#00ff88] font-bold">
+              HIT ANY PREDICTED = JACKPOT 9x
             </span>
           </div>
 
-          {/* Row 1: 0, 1, 2, 3, 4 (SMALL) */}
+          {/* Row 1: 0, 1, 2, 3, 4 */}
           <div className="grid grid-cols-5 gap-2">
             {[0, 1, 2, 3, 4].map((num) => {
               const isStrike1 = num1 === num;
               const isStrike2 = num2 === num;
               const isStrike3 = num3 === num;
               const isSelected = selectedNumber === num;
-              const isSameSide = predictedSize === 'SMALL';
 
               return (
                 <button
@@ -524,14 +541,12 @@ export const HomeDashboardView: React.FC<HomeDashboardViewProps> = ({
                     isStrike1
                       ? 'ring-4 ring-[#ffd700] scale-110 shadow-[0_0_25px_#ffd700] animate-pulse z-10'
                       : isStrike2
-                      ? 'ring-2 ring-[#00ffcc] scale-105 shadow-[0_0_18px_#00ffcc] z-10'
+                      ? 'ring-3 ring-[#00ffcc] scale-108 shadow-[0_0_20px_#00ffcc] z-10'
                       : isStrike3
-                      ? 'ring-2 ring-[#ff2a85] scale-105 shadow-[0_0_18px_#ff2a85] z-10'
+                      ? 'ring-3 ring-[#ff2a85] scale-108 shadow-[0_0_20px_#ff2a85] z-10'
                       : isSelected
                       ? 'ring-2 ring-white scale-105'
-                      : isSameSide
-                      ? 'opacity-100 ring-1 ring-white/30'
-                      : 'opacity-40 grayscale-[40%]'
+                      : 'opacity-70 hover:opacity-100 ring-1 ring-white/20'
                   }`}
                 >
                   <span>{num}</span>
@@ -555,14 +570,13 @@ export const HomeDashboardView: React.FC<HomeDashboardViewProps> = ({
             })}
           </div>
 
-          {/* Row 2: 5, 6, 7, 8, 9 (BIG) */}
+          {/* Row 2: 5, 6, 7, 8, 9 */}
           <div className="grid grid-cols-5 gap-2">
             {[5, 6, 7, 8, 9].map((num) => {
               const isStrike1 = num1 === num;
               const isStrike2 = num2 === num;
               const isStrike3 = num3 === num;
               const isSelected = selectedNumber === num;
-              const isSameSide = predictedSize === 'BIG';
 
               return (
                 <button
@@ -573,14 +587,12 @@ export const HomeDashboardView: React.FC<HomeDashboardViewProps> = ({
                     isStrike1
                       ? 'ring-4 ring-[#ffd700] scale-110 shadow-[0_0_25px_#ffd700] animate-pulse z-10'
                       : isStrike2
-                      ? 'ring-2 ring-[#00ffcc] scale-105 shadow-[0_0_18px_#00ffcc] z-10'
+                      ? 'ring-3 ring-[#00ffcc] scale-108 shadow-[0_0_20px_#00ffcc] z-10'
                       : isStrike3
-                      ? 'ring-2 ring-[#ff2a85] scale-105 shadow-[0_0_18px_#ff2a85] z-10'
+                      ? 'ring-3 ring-[#ff2a85] scale-108 shadow-[0_0_20px_#ff2a85] z-10'
                       : isSelected
                       ? 'ring-2 ring-white scale-105'
-                      : isSameSide
-                      ? 'opacity-100 ring-1 ring-white/30'
-                      : 'opacity-40 grayscale-[40%]'
+                      : 'opacity-70 hover:opacity-100 ring-1 ring-white/20'
                   }`}
                 >
                   <span>{num}</span>
@@ -605,96 +617,59 @@ export const HomeDashboardView: React.FC<HomeDashboardViewProps> = ({
           </div>
         </div>
 
-        {/* 100-RESULT MASTER LOGIC ANALYTICS MINI-HUD */}
-        <div className="mt-2 bg-black/70 rounded-xl p-2.5 border border-pink-500/30 text-[9.5px] font-mono-tech flex flex-col gap-1.5">
+        {/* QUANTUM NEURAL ENGINE ANALYTICS MINI-HUD */}
+        <div className="mt-1 bg-black/70 rounded-xl p-2.5 border border-[#ffd700]/30 text-[9.5px] font-mono-tech flex flex-col gap-1.5">
           <div className="flex items-center justify-between text-[#ffd700] font-orbitron font-bold border-b border-pink-500/20 pb-1">
             <span className="flex items-center gap-1">
-              <Zap size={11} className="text-[#ffd700]" />
-              <span>100-RESULT MASTER ALGO SUITE</span>
+              <Sparkles size={11} className="text-[#ffd700] animate-spin" />
+              <span>QUANTUM NEURAL ENGINE • 1000-DATA SYNC</span>
             </span>
-            <span className="text-[#00ff88] text-[8.5px]">UNDER 2 LEVEL FIX WIN</span>
+            <span className="text-[#00ff88] text-[8.5px] font-black">
+              {prediction?.levelStage === 3
+                ? 'UNDER LEVEL 3 (8X RECOVERY)'
+                : prediction?.levelStage === 2
+                ? 'UNDER LEVEL 2 (3X FIX)'
+                : 'UNDER LEVEL 1 (1X LOCK)'}
+            </span>
           </div>
 
           <div className="grid grid-cols-2 gap-2 text-gray-300 pt-0.5">
             <div className="flex flex-col gap-0.5 bg-black/50 p-1.5 rounded border border-white/5">
-              <span className="text-gray-400 text-[8px]">3-10 PATTERN DICT:</span>
-              <span className="text-pink-300 font-bold font-orbitron truncate">
-                {pattern100?.patternStr || 'L5: COMBINATION ACTIVE'}
+              <span className="text-gray-400 text-[8px]">ACTIVE 3-NUMBER MIX:</span>
+              <span className="text-[#ffd700] font-bold font-orbitron truncate">
+                #{num1} • #{num2} • #{num3}
               </span>
-              <span className="text-[7.5px] text-[#00ff88]">Confidence: {pattern100?.confidence ?? 99.4}%</span>
+              <span className="text-[7.5px] text-[#00ff88]">Jackpot Probability: {jackpotProb.toFixed(1)}%</span>
             </div>
 
             <div className="flex flex-col gap-0.5 bg-black/50 p-1.5 rounded border border-white/5">
-              <span className="text-gray-400 text-[8px]">100-DATA WEIGHT & FREQ:</span>
-              <span className="text-[#ffd700] font-bold font-orbitron">
-                BIG: {breakdown100?.weightFreq?.weightedBig ?? 54}% | SML: {breakdown100?.weightFreq?.weightedSmall ?? 46}%
+              <span className="text-gray-400 text-[8px]">WEB WORKER LATENCY:</span>
+              <span className="text-[#00ffcc] font-bold font-orbitron">
+                {workerLatency}ms (&lt;50ms Async Thread)
               </span>
-              <span className="text-[7.5px] text-cyan-300">Recency Decay: Active</span>
+              <span className="text-[7.5px] text-cyan-300">Non-Blocking UI</span>
             </div>
 
             <div className="flex flex-col gap-0.5 bg-black/50 p-1.5 rounded border border-white/5">
               <span className="text-gray-400 text-[8px]">SHANNON ROLLING ENTROPY:</span>
               <span className="text-[#00ffcc] font-bold font-orbitron">
-                H = {breakdown100?.entropy?.entropy ?? 0.88} • {breakdown100?.entropy?.marketState ?? 'TRENDING'}
+                H = {entropyScore.toFixed(2)} • {oscillatorPhase.slice(0, 18)}
               </span>
             </div>
 
             <div className="flex flex-col gap-0.5 bg-black/50 p-1.5 rounded border border-white/5">
-              <span className="text-gray-400 text-[8px]">QUANTUM WAVE & NEURAL:</span>
+              <span className="text-gray-400 text-[8px]">JACKPOT WIN RULE:</span>
               <span className="text-emerald-400 font-bold font-orbitron">
-                ψ² AMPLITUDE: {predictedSize}
+                DIRECT 9x PAYOUT
               </span>
-              <span className="text-[7.5px] text-[#00ff88]">Superposition Lock</span>
+              <span className="text-[7.5px] text-[#00ff88]">Any 1 of 3 Hits = JACKPOT</span>
             </div>
           </div>
         </div>
 
-        {/* Quick Multipliers & Big / Small Action Chips */}
-        <div className="flex items-center justify-between gap-1.5 overflow-x-auto pb-1 pt-1 scrollbar-none">
-          {/* BIG / SMALL Action Buttons with Prominent AI Highlight */}
-          <div className="flex items-center gap-2 w-full">
-            <button
-              type="button"
-              onClick={() => setSelectedMultiplier('BIG')}
-              className={`flex-1 py-2.5 px-2 rounded-xl text-xs font-orbitron font-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-                prediction?.predictionType !== 'COLOR' && predictedSize === 'BIG'
-                  ? 'bg-gradient-to-r from-[#ffd700] via-[#ffaa00] to-[#ff007f] text-black shadow-[0_0_25px_rgba(255,215,0,0.85)] ring-2 ring-white scale-[1.02]'
-                  : selectedMultiplier === 'BIG'
-                  ? 'bg-amber-800 text-white ring-2 ring-amber-400'
-                  : 'bg-black/70 text-gray-200 border border-pink-500/30 hover:border-pink-400 hover:bg-black/90'
-              }`}
-            >
-              <span>BIG</span>
-              {prediction?.predictionType !== 'COLOR' && predictedSize === 'BIG' && (
-                <span className="text-[8px] bg-black text-[#ffd700] px-1.5 py-0.5 rounded-full font-mono-tech border border-[#ffd700]/60">
-                  ★ AI TARGET
-                </span>
-              )}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setSelectedMultiplier('SMALL')}
-              className={`flex-1 py-2.5 px-2 rounded-xl text-xs font-orbitron font-black transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-                prediction?.predictionType !== 'COLOR' && predictedSize === 'SMALL'
-                  ? 'bg-gradient-to-r from-[#ff2a85] via-[#ff007f] to-[#800f4f] text-white shadow-[0_0_25px_rgba(255,42,133,0.85)] ring-2 ring-white scale-[1.02]'
-                  : selectedMultiplier === 'SMALL'
-                  ? 'bg-pink-800 text-white ring-2 ring-pink-400'
-                  : 'bg-black/70 text-gray-200 border border-pink-500/30 hover:border-pink-400 hover:bg-black/90'
-              }`}
-            >
-              <span>SMALL</span>
-              {prediction?.predictionType !== 'COLOR' && predictedSize === 'SMALL' && (
-                <span className="text-[8px] bg-black text-pink-300 px-1.5 py-0.5 rounded-full font-mono-tech border border-pink-400/60">
-                  ★ AI TARGET
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
-
-        {/* Multipliers row */}
+        {/* Multipliers row for Direct 9x Number Play */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5 scrollbar-none">
+          <span className="text-[8.5px] font-mono-tech text-gray-400 shrink-0">MULTIPLIER:</span>
           {['X1', 'X5', 'X10', 'X20', 'X50', 'X100'].map((item) => (
             <button
               key={item}
@@ -702,8 +677,8 @@ export const HomeDashboardView: React.FC<HomeDashboardViewProps> = ({
               onClick={() => setSelectedMultiplier(item)}
               className={`px-2.5 py-1 rounded-xl text-[9px] font-orbitron font-bold shrink-0 transition-all cursor-pointer ${
                 selectedMultiplier === item
-                  ? 'bg-gradient-to-r from-[#ff2a85] to-[#ff007f] text-white shadow-[0_0_12px_#ff2a85] font-black'
-                  : 'bg-black/70 text-gray-300 border border-pink-500/30 hover:border-pink-400'
+                  ? 'bg-gradient-to-r from-[#ffd700] to-[#ffaa00] text-black shadow-[0_0_12px_#ffd700] font-black'
+                  : 'bg-black/70 text-gray-300 border border-[#ffd700]/30 hover:border-[#ffd700]'
               }`}
             >
               {item}

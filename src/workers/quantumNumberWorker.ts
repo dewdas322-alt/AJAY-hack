@@ -215,26 +215,23 @@ function computeWorkerNumbers(payload: WorkerPredictionPayload): WorkerPredictio
 
     let baseScore = multiHorizonBase + entropyOscScore;
 
-    // Side & Trend Alignment
-    const isBigDigit = d >= 5;
-    const isSmallDigit = d <= 4;
-    const isSameSide = effectiveSize === 'BIG' ? isBigDigit : isSmallDigit;
-
-    if (isSameSide) {
-      baseScore += 3.8;
-    }
-
-    if (trendCategory === 'DRAGON' && isSameSide) {
-      baseScore += 2.8;
+    // Pattern & Frequency Enhancement (Pure Digit Probability across 0-9)
+    if (trendCategory === 'DRAGON') {
+      if ([7, 8, 9, 1, 2, 3].includes(d)) baseScore += 2.2;
+      if (f10[d] >= 2) baseScore += 1.8;
     } else if (trendCategory === 'MIRROR' && d === (lastNum + 5) % 10) {
-      baseScore += 3.4;
+      baseScore += 3.6;
     } else if (trendCategory === 'TWIN' && d === lastNum) {
-      baseScore += 3.0;
+      baseScore += 3.4;
+    } else if (trendCategory === 'ZIGZAG' && (d % 2 !== lastNum % 2)) {
+      baseScore += 2.8;
     }
 
-    // Under-level recovery boost for High Winning certainty
+    // Under-level recovery boost (Level 1, 2, 3) for High Winning certainty
     if (consecutiveLossCount >= 1 || currentLevelStage >= 2) {
-      if (isSameSide) baseScore += 2.5;
+      if (dens10 > 1.2 || (gaps[d] >= 4 && gaps[d] <= 12)) {
+        baseScore += 2.6;
+      }
     }
 
     digitScores[d] = Number(baseScore.toFixed(3));
@@ -248,25 +245,17 @@ function computeWorkerNumbers(payload: WorkerPredictionPayload): WorkerPredictio
     digitProbabilities[d] = Math.round((digitRawProb[d] / totalProbSum) * 100);
   }
 
-  // 9. Extract Top 3 Numbers
+  // 9. Extract Top 3 Numbers (Pure Mix of Big and Small based on highest winning probability)
   const sortedDigits = Array.from({ length: 10 }, (_, i) => i).sort(
     (a, b) => digitScores[b] - digitScores[a]
   );
 
-  const heroNumber = sortedDigits[0] ?? (effectiveSize === 'BIG' ? 7 : 2);
-  let comboNumber = sortedDigits[1] ?? (heroNumber === 7 ? 8 : (heroNumber === 2 ? 3 : (effectiveSize === 'BIG' ? 8 : 1)));
-  if (comboNumber === heroNumber) comboNumber = sortedDigits[2] ?? (effectiveSize === 'BIG' ? 9 : 0);
+  const heroNumber = sortedDigits[0] ?? 7;
+  let comboNumber = sortedDigits[1] ?? (heroNumber === 7 ? 2 : (heroNumber === 2 ? 8 : (heroNumber + 3) % 10));
+  if (comboNumber === heroNumber) comboNumber = sortedDigits[2] ?? 3;
 
   const hedgeCandidates = sortedDigits.slice(2).filter((n) => n !== heroNumber && n !== comboNumber);
-  let hedgeNumber: number;
-  if (trendCategory === 'MIRROR') {
-    const mirrorDigit = (heroNumber + 5) % 10;
-    hedgeNumber = (mirrorDigit !== heroNumber && mirrorDigit !== comboNumber)
-      ? mirrorDigit
-      : (hedgeCandidates[0] ?? (effectiveSize === 'BIG' ? 6 : 4));
-  } else {
-    hedgeNumber = hedgeCandidates[0] ?? (effectiveSize === 'BIG' ? 5 : 4);
-  }
+  const hedgeNumber = hedgeCandidates[0] ?? ((heroNumber + 5) % 10);
 
   // Ensure 3 distinct numbers
   const finalTriad: [number, number, number] = [heroNumber, comboNumber, hedgeNumber];

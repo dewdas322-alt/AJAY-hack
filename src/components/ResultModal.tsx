@@ -145,18 +145,16 @@ export const ResultModal: React.FC<ResultModalProps> = ({
 
         {/* Win / Loss / Jackpot Title */}
         <h2 className={`font-orbitron text-2xl sm:text-3xl font-black tracking-widest uppercase z-10 ${
-          isJackpot 
-            ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#ffd700] via-white to-[#ff2a85] drop-shadow-[0_0_20px_rgba(255,215,0,0.9)]'
-            : isWin 
-            ? 'text-[#00ff88] drop-shadow-[0_0_15px_#00ff88]' 
+          isJackpot || isWin
+            ? 'text-transparent bg-clip-text bg-gradient-to-r from-[#ffd700] via-white to-[#00ff88] drop-shadow-[0_0_20px_rgba(255,215,0,0.9)]'
             : 'text-[#ff2a55] drop-shadow-[0_0_15px_#ff2a55]'
         }`}>
-          {isJackpot ? '★ JACKPOT HIT ★' : (isWin ? '- WIN -' : '- LOSS -')}
+          {isJackpot || isWin ? '★ JACKPOT WIN ★' : '- LOSS -'}
         </h2>
 
         <p className="text-[10px] font-mono-tech text-pink-200/90 flex items-center gap-1 mt-0.5 mb-3 z-10">
           <Sparkles size={11} className="text-[#ffd700]" />
-          <span>SAMURAI WARRIOR V3 VERIFIED</span>
+          <span>QUANTUM NEURAL ENGINE (9x PAYOUT)</span>
           <Sparkles size={11} className="text-[#ffd700]" />
         </p>
 
@@ -167,21 +165,15 @@ export const ResultModal: React.FC<ResultModalProps> = ({
             <span className="text-[#ffd700] font-bold">#{result.issue}</span>
           </div>
           <div className="flex items-center justify-between text-gray-300">
-            <span>WINGO TYPE:</span>
+            <span>MODE:</span>
             <span className="text-white font-bold px-2 py-0.5 rounded bg-pink-950/80 border border-pink-500/40">
               {result.mode === '30s' ? '⚡ Win Go 30 Seconds' : '⏱️ Win Go 1 Minute'}
             </span>
           </div>
           <div className="flex items-center justify-between text-gray-300">
-            <span>PREDICTION TYPE:</span>
-            <span className="text-pink-300 font-bold">
-              {result.predictionType || 'SIZE'} ({result.predictedSize || result.predictedColor || result.targetPick})
-            </span>
-          </div>
-          <div className="flex items-center justify-between text-gray-300">
-            <span>OUTCOME:</span>
-            <span className={`font-bold ${isJackpot ? 'text-[#ffd700]' : isWin ? 'text-[#00ff88]' : 'text-[#ff2a55]'}`}>
-              {result.statusLabel || (isWin ? 'WIN' : 'LOSS')}
+            <span>JACKPOT STATUS:</span>
+            <span className={`font-bold ${isJackpot || isWin ? 'text-[#ffd700]' : 'text-[#ff2a55]'}`}>
+              {result.statusLabel || (isJackpot || isWin ? 'JACKPOT WIN (9x)' : 'LOSS')}
             </span>
           </div>
         </div>
@@ -190,53 +182,46 @@ export const ResultModal: React.FC<ResultModalProps> = ({
         <div className="w-full grid grid-cols-2 gap-2 mb-3 z-10">
           {/* Prediction Box */}
           <div className="bg-pink-950/70 rounded-2xl p-3 border border-pink-500/40 flex flex-col items-center text-center shadow-inner">
-            <span className="text-[9px] font-mono-tech text-pink-200">
-              {result.predictionType === 'COLOR' ? 'TARGET COLOR' : 'TARGET SIZE'}
+            <span className="text-[8.5px] font-mono-tech text-[#ffd700] font-bold">
+              3-NUMBER JACKPOT LOCK
             </span>
-            <span className="font-orbitron text-base font-black text-white mt-0.5">
-              {result.predictedSize || result.targetPick || 'BIG'}
-            </span>
-            <div className="flex flex-col items-center gap-1 mt-1.5 w-full">
-              <span className="text-[7.5px] font-mono-tech text-gray-300 font-bold uppercase tracking-wider">
-                3 HIGH-WIN NUMBERS:
-              </span>
-              <div className="flex items-center gap-1 flex-wrap justify-center">
-                {(result.highProbNumbers || (result.predictedNumbers && result.predictedNumbers.length > 0 ? result.predictedNumbers : [result.sameSideNumber ?? 7])).map((num, i) => {
-                  const isHit = result.actualNum !== undefined && result.actualNum === num;
-                  return (
-                    <span
-                      key={i}
-                      className={`text-[9px] font-mono-tech font-bold px-1.5 py-0.5 rounded border ${
-                        isHit
-                          ? 'bg-[#ffd700] text-black border-white shadow-[0_0_12px_#ffd700] animate-bounce font-black'
-                          : i === 0
-                          ? 'bg-[#ffd700]/25 text-[#ffd700] border-[#ffd700]/50'
-                          : i === 1
-                          ? 'bg-[#00ffcc]/25 text-[#00ffcc] border-[#00ffcc]/50'
-                          : 'bg-[#ff2a85]/25 text-pink-300 border-[#ff2a85]/50'
-                      }`}
-                    >
-                      #{num}
-                    </span>
-                  );
-                })}
-              </div>
+            <div className="flex items-center gap-1 mt-2 flex-wrap justify-center">
+              {(result.highProbNumbers || (result.predictedNumbers && result.predictedNumbers.length > 0 ? result.predictedNumbers : [result.sameSideNumber ?? 7])).map((num, i) => {
+                const isHit = result.actualNum !== undefined && result.actualNum === num;
+                return (
+                  <span
+                    key={i}
+                    className={`text-[10px] font-mono-tech font-bold px-2 py-1 rounded-lg border ${
+                      isHit
+                        ? 'bg-[#ffd700] text-black border-white shadow-[0_0_15px_#ffd700] animate-bounce font-black scale-105'
+                        : i === 0
+                        ? 'bg-[#ffd700]/25 text-[#ffd700] border-[#ffd700]/50'
+                        : i === 1
+                        ? 'bg-[#00ffcc]/25 text-[#00ffcc] border-[#00ffcc]/50'
+                        : 'bg-[#ff2a85]/25 text-pink-300 border-[#ff2a85]/50'
+                    }`}
+                  >
+                    #{num}
+                  </span>
+                );
+              })}
             </div>
           </div>
 
           {/* Actual Box */}
           <div className="bg-black/80 rounded-2xl p-3 border border-pink-500/30 flex flex-col items-center text-center shadow-inner">
-            <span className="text-[9px] font-mono-tech text-gray-400">ACTUAL RESULT</span>
-            <span className="font-orbitron text-base font-black text-[#00ff88] mt-1">
-              {result.actualSize || '--'}
-            </span>
-            {result.actualNum !== undefined && (
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="text-[10px] font-mono-tech text-gray-400">NO:</span>
-                <div className={`w-6 h-6 rounded-full ${getBall3dClass(result.actualNum)} text-white font-orbitron font-black text-[11px] flex items-center justify-center`}>
+            <span className="text-[8.5px] font-mono-tech text-gray-400">DRAWN NUMBER</span>
+            {result.actualNum !== undefined ? (
+              <div className="flex flex-col items-center gap-1 mt-1.5">
+                <div className={`w-8 h-8 rounded-full ${getBall3dClass(result.actualNum)} text-white font-orbitron font-black text-sm flex items-center justify-center shadow-lg`}>
                   {result.actualNum}
                 </div>
+                <span className="text-[9px] font-mono-tech text-[#ffd700] font-bold">
+                  {isJackpot || isWin ? '★ 9x STRIKE' : 'MISSED'}
+                </span>
               </div>
+            ) : (
+              <span className="text-gray-500 mt-2">-</span>
             )}
           </div>
         </div>

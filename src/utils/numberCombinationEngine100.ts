@@ -217,65 +217,62 @@ export function compute10to100NumberCombinations(
 
     // Entropy-Oscillator Fusion
     const entropyOscScore =
-      (1 - compositeEntropy) * (dens10 * 1.4 + dens25 * 0.8) +
-      compositeEntropy * (oscInfluence * 1.8 + gapScore * 0.9) +
-      0.25 * mScore;
+      (1 - compositeEntropy) * (dens10 * 1.5 + dens25 * 0.9) +
+      compositeEntropy * (oscInfluence * 2.0 + gapScore * 1.2) +
+      0.35 * mScore;
 
     let baseScore = multiHorizonBase + entropyOscScore;
 
-    // Pattern & Side Alignment:
-    const isBigDigit = d >= 5;
-    const isSmallDigit = d <= 4;
-    const isSameSide = effectiveSize === 'BIG' ? isBigDigit : isSmallDigit;
-
-    // Primary Side Boost (ensures strong alignment with macro probability consensus)
-    if (isSameSide) {
-      baseScore += 3.8;
-    }
-
-    // Specific Pattern Logic
+    // Specific Pattern & Mathematical Frequency Logic (Pure Digit Probability, Mix of Big & Small)
     switch (trendCategory) {
       case 'DRAGON':
-        if (isSameSide) {
-          baseScore += 2.8;
-          if ([7, 8, 9, 1, 2, 3].includes(d)) baseScore += 1.3;
-        }
+        if ([7, 8, 9, 1, 2, 3].includes(d)) baseScore += 2.2;
+        if (f10[d] >= 2) baseScore += 1.8;
         break;
 
       case 'MIRROR': {
         const mirrorPartner = (lastNum + 5) % 10;
-        if (d === mirrorPartner) baseScore += 3.4;
-        if (d === lastNum) baseScore += 1.8;
+        if (d === mirrorPartner) baseScore += 3.6;
+        if (d === lastNum) baseScore += 2.0;
         break;
       }
 
       case 'ZIGZAG': {
         const lastParity = lastNum % 2;
-        if (d % 2 !== lastParity) baseScore += 2.4;
+        if (d % 2 !== lastParity) baseScore += 2.8;
         break;
       }
 
       case 'TWIN':
-        if (d === lastNum) baseScore += 3.0;
-        if (Math.abs(d - lastNum) === 1) baseScore += 1.6;
+        if (d === lastNum) baseScore += 3.4;
+        if (Math.abs(d - lastNum) === 1) baseScore += 1.9;
         break;
 
       case 'TRIPLET':
-        if (Math.abs(d - lastNum) === 3 || Math.abs(d - lastNum) === 7) baseScore += 2.4;
+        if (Math.abs(d - lastNum) === 3 || Math.abs(d - lastNum) === 7) baseScore += 2.6;
         break;
 
       case 'LADDER':
-        if (d === (lastNum + 1) % 10 || d === (lastNum + 9) % 10) baseScore += 2.8;
+        if (d === (lastNum + 1) % 10 || d === (lastNum + 9) % 10) baseScore += 3.0;
         break;
 
       case 'BREAKER':
-        if (isSameSide) baseScore += 3.2;
+        // Breaker reversal candidate
+        if (gaps[d] >= 5 && gaps[d] <= 14) baseScore += 2.8;
         break;
 
       case 'RANDOM_CHAOS':
       default:
-        if (f10[d] >= 2) baseScore += 1.6;
+        if (f10[d] >= 2 || f25[d] >= 4) baseScore += 2.1;
         break;
+    }
+
+    // Under-level (Level 1, 2, 3) Recovery Boost for maximum jackpot strike certainty
+    if (consecutiveLossCount >= 1 || currentLevelStage >= 2) {
+      // Elevate top frequency and mean-reversion attractor numbers
+      if (dens10 > 1.2 || (gaps[d] >= 4 && gaps[d] <= 12)) {
+        baseScore += 2.6;
+      }
     }
 
     digitScores[d] = Number(baseScore.toFixed(3));
@@ -289,35 +286,23 @@ export function compute10to100NumberCombinations(
     digitProbabilities[d] = Math.round((digitRawProb[d] / totalProbSum) * 100);
   }
 
-  // 10. Extract Top 3 High-Intensity Numbers (Primary, Secondary, Tertiary)
+  // 10. Extract Top 3 High-Intensity Numbers (Pure Mix of Big and Small by highest winning probability)
   const sortedDigits = Array.from({ length: 10 }, (_, i) => i).sort(
     (a, b) => digitScores[b] - digitScores[a]
   );
 
-  // #1 PRIMARY (APEX HERO PICK) - Absolute highest score
-  const heroNumber = sortedDigits[0] ?? (effectiveSize === 'BIG' ? 7 : 2);
+  // #1 PRIMARY (APEX HERO PICK) - Absolute highest score across 0-9
+  const heroNumber = sortedDigits[0] ?? 7;
 
-  // #2 SECONDARY (STRATEGIC COMPANION PICK) - 2nd highest synergy
-  let comboNumber = sortedDigits[1] ?? (heroNumber === 7 ? 8 : (heroNumber === 2 ? 3 : (effectiveSize === 'BIG' ? 8 : 1)));
+  // #2 SECONDARY (STRATEGIC COMBO PICK) - 2nd highest probability
+  let comboNumber = sortedDigits[1] ?? (heroNumber === 7 ? 2 : (heroNumber === 2 ? 8 : (heroNumber + 3) % 10));
   if (comboNumber === heroNumber) {
-    comboNumber = sortedDigits[2] ?? (effectiveSize === 'BIG' ? 9 : 0);
+    comboNumber = sortedDigits[2] ?? 3;
   }
 
-  // #3 TERTIARY (TACTICAL TREND HEDGE PICK) - 3rd highest with optimal pattern calibration
+  // #3 TERTIARY (TACTICAL HEDGE PICK) - 3rd highest probability
   const hedgeCandidates = sortedDigits.slice(2).filter((n) => n !== heroNumber && n !== comboNumber);
-  let hedgeNumber: number;
-
-  if (trendCategory === 'MIRROR') {
-    const mirrorDigit = (heroNumber + 5) % 10;
-    hedgeNumber = (mirrorDigit !== heroNumber && mirrorDigit !== comboNumber)
-      ? mirrorDigit
-      : (hedgeCandidates[0] ?? (effectiveSize === 'BIG' ? 6 : 4));
-  } else if (trendCategory === 'DRAGON') {
-    const sameSideHedge = hedgeCandidates.find((n) => effectiveSize === 'BIG' ? n >= 5 : n <= 4);
-    hedgeNumber = sameSideHedge !== undefined ? sameSideHedge : (hedgeCandidates[0] ?? (effectiveSize === 'BIG' ? 5 : 0));
-  } else {
-    hedgeNumber = hedgeCandidates[0] ?? (effectiveSize === 'BIG' ? 5 : 4);
-  }
+  const hedgeNumber = hedgeCandidates[0] ?? ((heroNumber + 5) % 10);
 
   // Ensure all 3 numbers are strictly unique
   const finalTriad: [number, number, number] = [heroNumber, comboNumber, hedgeNumber];

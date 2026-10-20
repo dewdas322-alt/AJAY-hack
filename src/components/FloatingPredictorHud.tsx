@@ -103,25 +103,15 @@ export const FloatingPredictorHud: React.FC<FloatingPredictorHudProps> = ({
     }
   }, [latestFinishedResult, soundOn]);
 
-  // STRICT SINGLE-TARGET PREDICTION LOGIC (SIZE OR COLOR EXCLUSIVE)
-  const isColorTarget = prediction?.predictionType === 'COLOR';
+  // STRICT 100% NUMBER PREDICTION LOGIC (3 HIGH-PROBABILITY NUMBERS MIX)
   const isHold = prediction?.predictionType === 'HOLD' || prediction?.targetPick === 'HOLD';
-  
-  const predictedColor = prediction?.predictedColor || 'GREEN';
-  const predictedSize = prediction?.predictedSize || 'BIG';
-  
-  const isGreen = predictedColor === 'GREEN';
-  const isRed = predictedColor === 'RED';
-  const isBig = predictedSize === 'BIG';
 
-  // 3 High-Probability Numbers (10-100 Range Combination Matrix)
+  // 3 High-Probability Numbers (10-1000 Deep Horizon Matrix)
   const numPredictions = prediction?.numberPredictions;
-  const sameSideNum = prediction?.sameSideNumber ?? prediction?.oppositeNumber ?? prediction?.predictedNumbers?.[0] ?? (isBig ? 7 : 2);
-  const num1 = numPredictions?.heroNumber ?? (prediction?.predictedNumbers?.[0] ?? sameSideNum);
-  const num2 = numPredictions?.comboNumber ?? (prediction?.predictedNumbers?.[1] ?? (num1 === 7 ? 8 : (num1 === 2 ? 3 : (num1 + 1) % 10)));
-  const num3 = numPredictions?.hedgeNumber ?? (prediction?.predictedNumbers?.[2] ?? (num1 === 7 ? 5 : (num1 === 2 ? 0 : (num1 + 2) % 10)));
-  const comboLabel = numPredictions?.comboPatternLabel || `10-100 MATRIX: TRIPLE COMBO (#${num1} • #${num2} • #${num3})`;
-  const sameSideLabel = prediction?.sameSideLabel || (isBig ? 'SAME-SIDE #7 (BIG)' : 'SAME-SIDE #2 (SMALL)');
+  const num1 = numPredictions?.heroNumber ?? (prediction?.predictedNumbers?.[0] ?? 7);
+  const num2 = numPredictions?.comboNumber ?? (prediction?.predictedNumbers?.[1] ?? 2);
+  const num3 = numPredictions?.hedgeNumber ?? (prediction?.predictedNumbers?.[2] ?? 8);
+  const comboLabel = numPredictions?.comboPatternLabel || `1000-DATA QUANTUM ENGINE: (#${num1} • #${num2} • #${num3})`;
 
   const conf1 = numPredictions?.confidence1 ?? 99.6;
   const conf2 = numPredictions?.confidence2 ?? 99.1;
@@ -633,19 +623,18 @@ export const FloatingPredictorHud: React.FC<FloatingPredictorHudProps> = ({
                 ) : (
                   /* EXCLUSIVE SINGLE FORECAST (COLOR OR SIZE) + SINGLE HIGH PROBABILITY NUMBER */
                   <div className="flex flex-col items-center">
-                    {/* Faded Non-Essential Telemetry Strip (Subtle reference size & period) */}
-                    <div className="w-full flex items-center justify-between px-2 py-0.5 rounded bg-black/50 border border-white/10 text-[7px] font-mono-tech text-gray-400 mb-1.5 opacity-70 hover:opacity-100 transition-opacity">
-                      <span>PERIOD #{issueShort}</span>
-                      <span className="flex items-center gap-1 text-gray-300 bg-white/5 px-1.5 py-0.2 rounded border border-white/10 text-[6.5px]">
-                        <span>REF:</span>
-                        <span className={isBig ? 'text-[#ffd700] font-bold' : 'text-[#00ffcc] font-bold'}>{predictedSize}</span>
-                        <span className="text-gray-500">({isBig ? '5-9' : '0-4'})</span>
+                    {/* Quantum Neural Engine Stream Active Telemetry Strip */}
+                    <div className="w-full flex items-center justify-between px-2 py-0.5 rounded bg-black/60 border border-[#00ffcc]/30 text-[7px] font-mono-tech text-gray-300 mb-1.5 shadow-[0_0_10px_rgba(0,255,204,0.15)]">
+                      <span className="text-[#ffd700] font-bold">PERIOD #{issueShort}</span>
+                      <span className="flex items-center gap-1 text-[#00ffcc] font-black">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#00ffcc] animate-ping inline-block" />
+                        <span>QUANTUM NEURAL ENGINE</span>
                       </span>
-                      <span className="text-[#ffd700] font-bold text-[6.5px]">9x DIRECT STRIKE</span>
+                      <span className="text-[#ffd700] font-black text-[6.5px]">9x JACKPOT</span>
                     </div>
 
-                    {/* HERO DOMINANT: 3 HIGH-PROBABILITY NUMBERS WITH TIERED INTENSITY GLOW */}
-                    <div className="w-full bg-gradient-to-b from-[#181126]/95 via-[#0f0a1c]/98 to-[#05030a] rounded-2xl p-2.5 border-2 border-[#ffd700]/70 mb-1.5 shadow-[0_0_25px_rgba(255,215,0,0.4),inset_0_1px_5px_rgba(255,255,255,0.25)] relative overflow-hidden">
+                    {/* HERO DOMINANT: 3 HIGH-PROBABILITY NUMBERS WITH TIERED INTENSITY GLOW & SUBTLE PULSE */}
+                    <div className="w-full bg-gradient-to-b from-[#181126]/95 via-[#0f0a1c]/98 to-[#05030a] rounded-2xl p-2.5 border-2 border-[#ffd700]/70 mb-1.5 shadow-[0_0_25px_rgba(255,215,0,0.4),inset_0_1px_5px_rgba(255,255,255,0.25)] relative overflow-hidden animate-quantum-pulse">
                       {/* Subtle Cyber Grid Ambient Background */}
                       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,215,0,0.15),transparent_70%)] pointer-events-none" />
 
@@ -653,7 +642,7 @@ export const FloatingPredictorHud: React.FC<FloatingPredictorHudProps> = ({
                       <div className="relative z-10 flex items-center justify-between text-[7px] font-orbitron font-black text-[#ffd700] tracking-widest uppercase mb-2 px-0.5">
                         <span className="flex items-center gap-1 text-[#ffd700] drop-shadow-[0_0_6px_#ffd700]">
                           <Crown size={9} className="text-[#ffd700]" />
-                          <span>3 HIGH-PROBABILITY NUMBERS</span>
+                          <span>3 HIGH-PROBABILITY NUMBERS MIX</span>
                         </span>
                         <span className="text-[6px] px-1.5 py-0.2 rounded-full bg-[#00ffcc]/20 text-[#00ffcc] border border-[#00ffcc]/40 font-mono-tech font-black">
                           1000-DATA • &lt;50ms
@@ -732,7 +721,11 @@ export const FloatingPredictorHud: React.FC<FloatingPredictorHudProps> = ({
                         <span className="text-[#00ff88] font-black">{jackpotProb.toFixed(1)}%</span>
                       </span>
                       <span className="text-[#ffd700] font-black tracking-wide">
-                        {prediction?.levelStage === 2 ? '⚡ STAGE 2 (3X FIX)' : 'STAGE 1 (1X LOCK)'}
+                        {prediction?.levelStage === 3
+                          ? '⚡ LEVEL 3 (8X RECOVERY)'
+                          : prediction?.levelStage === 2
+                          ? '⚡ LEVEL 2 (3X FIX)'
+                          : 'LEVEL 1 (1X LOCK)'}
                       </span>
                     </div>
                   </div>

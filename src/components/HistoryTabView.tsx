@@ -528,9 +528,9 @@ export const HistoryTabView: React.FC<HistoryTabViewProps> = ({
                     <thead>
                       <tr className="bg-pink-950/50 border-b border-pink-500/30 text-[9px] font-orbitron text-pink-200 font-bold uppercase tracking-wider">
                         <th className="py-2 px-2.5">Period</th>
-                        <th className="py-2 px-2">AI Prediction</th>
-                        <th className="py-2 px-2 text-center">Real Result</th>
-                        <th className="py-2 px-2.5 text-right">Status</th>
+                        <th className="py-2 px-2">3 Numbers Prediction</th>
+                        <th className="py-2 px-2 text-center">Drawn Ball</th>
+                        <th className="py-2 px-2.5 text-right">Jackpot Status</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-pink-500/15 font-mono-tech text-xs">
@@ -540,11 +540,7 @@ export const HistoryTabView: React.FC<HistoryTabViewProps> = ({
                         const isHold = item.status === 'HOLD';
                         const isLoss = item.status === 'LOSS';
 
-                        const targetLabel = item.predictionType === 'COLOR' 
-                          ? `${item.predictedColor}` 
-                          : item.predictionType === 'SIZE'
-                          ? `${item.predictedSize}`
-                          : `${item.targetPick || item.predictedSize}`;
+                        const numbersList = item.highProbNumbers || (item.predictedNumbers && item.predictedNumbers.length > 0 ? item.predictedNumbers : [item.sameSideNumber ?? 7]);
 
                         return (
                           <tr 
@@ -562,65 +558,55 @@ export const HistoryTabView: React.FC<HistoryTabViewProps> = ({
                               <span className="text-[#ffd700]">#{item.issue.slice(-6)}</span>
                             </td>
 
-                            {/* AI Target */}
+                            {/* 3 Numbers Target */}
                             <td className="py-2 px-2">
-                              <div className="flex flex-col">
-                                <span className="font-orbitron font-black text-[11px] text-white flex items-center gap-1">
-                                  <span>{targetLabel}</span>
-                                </span>
-                                <div className="flex items-center gap-1 mt-0.5 flex-wrap">
-                                  {(item.highProbNumbers || (item.predictedNumbers && item.predictedNumbers.length > 0 ? item.predictedNumbers : [item.sameSideNumber ?? 7])).map((num, i) => {
-                                    const isHit = item.actualNum !== undefined && item.actualNum === num;
-                                    return (
-                                      <span
-                                        key={i}
-                                        className={`text-[8px] px-1 py-0.2 rounded font-mono-tech font-bold border ${
-                                          isHit
-                                            ? 'bg-[#ffd700] text-black border-white shadow-[0_0_8px_#ffd700] font-black'
-                                            : i === 0
-                                            ? 'bg-[#ffd700]/20 text-[#ffd700] border-[#ffd700]/40'
-                                            : i === 1
-                                            ? 'bg-[#00ffcc]/20 text-[#00ffcc] border-[#00ffcc]/40'
-                                            : 'bg-[#ff2a85]/20 text-pink-300 border-[#ff2a85]/40'
-                                        }`}
-                                        title={`Strike #${i + 1}`}
-                                      >
-                                        #{num}
-                                      </span>
-                                    );
-                                  })}
-                                </div>
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                {numbersList.map((num, i) => {
+                                  const isHit = item.actualNum !== undefined && item.actualNum === num;
+                                  return (
+                                    <span
+                                      key={i}
+                                      className={`text-[8.5px] px-1.5 py-0.5 rounded font-mono-tech font-black border ${
+                                        isHit
+                                          ? 'bg-[#ffd700] text-black border-white shadow-[0_0_10px_#ffd700] font-black scale-105'
+                                          : i === 0
+                                          ? 'bg-[#ffd700]/20 text-[#ffd700] border-[#ffd700]/50'
+                                          : i === 1
+                                          ? 'bg-[#00ffcc]/20 text-[#00ffcc] border-[#00ffcc]/50'
+                                          : 'bg-[#ff2a85]/20 text-pink-300 border-[#ff2a85]/50'
+                                      }`}
+                                      title={`Strike #${i + 1}`}
+                                    >
+                                      #{num}
+                                    </span>
+                                  );
+                                })}
                               </div>
                             </td>
 
-                            {/* Real Result */}
+                            {/* Real Result Ball */}
                             <td className="py-2 px-2 text-center">
-                              <div className="flex items-center justify-center gap-1.5">
+                              <div className="flex items-center justify-center gap-1">
                                 {item.actualNum !== undefined ? (
-                                  <div className={`w-5 h-5 rounded-full ${getBall3dClass(item.actualNum)} text-white font-orbitron font-black text-[9px] flex items-center justify-center`}>
+                                  <div className={`w-6 h-6 rounded-full ${getBall3dClass(item.actualNum)} text-white font-orbitron font-black text-[10px] flex items-center justify-center shadow-md`}>
                                     {item.actualNum}
                                   </div>
                                 ) : (
                                   <span className="text-gray-500">-</span>
                                 )}
-                                <span className="font-orbitron font-bold text-[10px] text-white">
-                                  {item.actualSize || '--'}
-                                </span>
                               </div>
                             </td>
 
                             {/* Win / Loss / Jackpot Status */}
                             <td className="py-2 px-2.5 text-right">
                               <span className={`inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[9px] font-orbitron font-black border ${
-                                isJackpot 
-                                  ? 'bg-[#ffd700]/20 text-[#ffd700] border-[#ffd700]/70 shadow-[0_0_8px_rgba(255,215,0,0.4)]'
-                                  : isWin 
-                                  ? 'bg-emerald-500/20 text-[#00ff88] border-emerald-500/50 shadow-[0_0_6px_rgba(0,255,136,0.3)]' 
+                                isJackpot || isWin
+                                  ? 'bg-[#ffd700]/25 text-[#ffd700] border-[#ffd700]/70 shadow-[0_0_10px_rgba(255,215,0,0.5)]'
                                   : isHold
                                   ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/50'
                                   : 'bg-red-500/20 text-red-400 border-red-500/50'
                               }`}>
-                                {isJackpot ? '★ JACKPOT' : isWin ? '✓ WIN' : isHold ? 'HOLD' : '✗ LOSS'}
+                                {isJackpot || isWin ? '★ JACKPOT (9x)' : isHold ? 'HOLD' : '✗ LOSS'}
                               </span>
                             </td>
                           </tr>
@@ -665,29 +651,15 @@ export const HistoryTabView: React.FC<HistoryTabViewProps> = ({
                   const isJackpot = item.status === 'JACKPOT';
                   const isHold = item.status === 'HOLD';
                   
-                  // Active Target representation
-                  const targetText = item.predictionType === 'COLOR' 
-                    ? `COLOR: ${item.predictedColor}` 
-                    : item.predictionType === 'SIZE'
-                    ? `SIZE: ${item.predictedSize}`
-                    : `PICK: ${item.targetPick || item.predictedSize}`;
-
-                  // Checks
-                  const sizeMatched = item.actualSize === item.predictedSize;
-                  const isActualGreen = [1, 3, 5, 7, 9].includes(item.actualNum ?? -1);
-                  const isActualRed = [0, 2, 4, 6, 8].includes(item.actualNum ?? -1);
-                  const colorMatched = (item.predictedColor === 'GREEN' && isActualGreen) ||
-                                       (item.predictedColor === 'RED' && isActualRed);
-                  const numberMatched = (item.predictedNumbers || []).includes(item.actualNum ?? -1);
+                  const numbersList = item.highProbNumbers || (item.predictedNumbers && item.predictedNumbers.length > 0 ? item.predictedNumbers : [item.sameSideNumber ?? 7]);
+                  const numberMatched = item.actualNum !== undefined && numbersList.includes(item.actualNum);
 
                   return (
                     <div 
                       key={`${item.id}-${idx}`}
                       className={`w-full samurai-glass-panel rounded-2xl p-3.5 border-2 flex flex-col gap-2 relative overflow-hidden shadow-lg transition-all ${
-                        isJackpot 
+                        isJackpot || isWin
                           ? 'border-[#ffd700]/70 shadow-[0_0_20px_rgba(255,215,0,0.3)]' 
-                          : isWin 
-                          ? 'border-emerald-500/50 shadow-[0_0_15px_rgba(0,255,136,0.2)]' 
                           : isHold
                           ? 'border-yellow-500/50'
                           : 'border-red-500/40'
@@ -706,22 +678,18 @@ export const HistoryTabView: React.FC<HistoryTabViewProps> = ({
 
                         {/* Result Pill Badge */}
                         <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-orbitron font-black flex items-center gap-1 ${
-                          isJackpot
-                            ? 'bg-[#ffd700]/20 text-[#ffd700] border border-[#ffd700]/70 shadow-[0_0_12px_rgba(255,215,0,0.5)]'
-                            : isWin 
-                            ? 'bg-emerald-500/20 text-[#00ff88] border border-emerald-500/50 shadow-[0_0_10px_rgba(0,255,136,0.3)]' 
+                          isJackpot || isWin
+                            ? 'bg-[#ffd700]/25 text-[#ffd700] border border-[#ffd700]/70 shadow-[0_0_12px_rgba(255,215,0,0.5)]'
                             : isHold
                             ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/50'
                             : 'bg-red-500/20 text-red-400 border border-red-500/50'
                         }`}>
-                          {isJackpot ? (
+                          {isJackpot || isWin ? (
                             <Sparkles size={11} className="text-[#ffd700]" />
-                          ) : isWin ? (
-                            <CheckCircle2 size={11} />
                           ) : (
                             <XCircle size={11} />
                           )}
-                          <span>{item.statusLabel || (isJackpot ? 'JACKPOT' : isWin ? 'WIN' : 'LOSS')}</span>
+                          <span>{isJackpot || isWin ? 'JACKPOT WIN (9x)' : isHold ? 'HOLD' : 'LOSS'}</span>
                         </span>
                       </div>
 
@@ -729,13 +697,13 @@ export const HistoryTabView: React.FC<HistoryTabViewProps> = ({
                       <div className="grid grid-cols-2 gap-2 bg-black/60 rounded-xl p-2.5 border border-pink-500/15">
                         {/* Left: PREDICTED */}
                         <div className="flex flex-col">
-                          <span className="text-[8px] font-mono-tech text-pink-300/80">TARGET PREDICTION</span>
+                          <span className="text-[8px] font-mono-tech text-[#ffd700]">3-NUMBER PREDICTION</span>
                           <div className="flex flex-col mt-0.5">
                             <span className="font-orbitron text-xs font-black text-white">
-                              {targetText}
+                              {numbersList.map(n => `#${n}`).join(' • ')}
                             </span>
                             <div className="flex items-center gap-1 mt-1 flex-wrap">
-                              {(item.highProbNumbers || (item.predictedNumbers && item.predictedNumbers.length > 0 ? item.predictedNumbers : [item.sameSideNumber ?? 7])).map((num, i) => {
+                              {numbersList.map((num, i) => {
                                 const isHit = item.actualNum !== undefined && item.actualNum === num;
                                 return (
                                   <span
@@ -760,15 +728,14 @@ export const HistoryTabView: React.FC<HistoryTabViewProps> = ({
 
                         {/* Right: ACTUAL */}
                         <div className="flex flex-col items-end">
-                          <span className="text-[8px] font-mono-tech text-gray-400">ACTUAL RESULT</span>
+                          <span className="text-[8px] font-mono-tech text-gray-400">DRAWN NUMBER</span>
                           <div className="flex items-center gap-1.5 mt-0.5">
-                            <span className="font-orbitron text-xs font-black text-[#00ff88]">
-                              {item.actualSize || '--'}
-                            </span>
-                            {item.actualNum !== undefined && (
-                              <div className={`w-5 h-5 rounded-full ${getBall3dClass(item.actualNum)} text-white font-orbitron font-black text-[10px] flex items-center justify-center`}>
+                            {item.actualNum !== undefined ? (
+                              <div className={`w-6 h-6 rounded-full ${getBall3dClass(item.actualNum)} text-white font-orbitron font-black text-[11px] flex items-center justify-center shadow-md`}>
                                 {item.actualNum}
                               </div>
+                            ) : (
+                              <span className="text-gray-500">-</span>
                             )}
                           </div>
                         </div>
@@ -777,32 +744,18 @@ export const HistoryTabView: React.FC<HistoryTabViewProps> = ({
                       {/* Verification Badges Row */}
                       <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
                         <span className={`px-2 py-0.5 rounded-md text-[8px] font-mono-tech flex items-center gap-1 border ${
-                          sizeMatched 
-                            ? 'bg-emerald-950/50 border-emerald-500/40 text-emerald-300' 
+                          numberMatched 
+                            ? 'bg-amber-950/60 border-[#ffd700]/60 text-[#ffd700] font-bold shadow-[0_0_8px_rgba(255,215,0,0.3)]' 
                             : 'bg-red-950/40 border-red-500/30 text-red-300'
                         }`}>
-                          <span>SIZE: {sizeMatched ? '✓ HIT' : '✗ MISS'}</span>
+                          <span>{numberMatched ? `★ JACKPOT HIT #${item.actualNum} (9x PAYOUT)` : `✗ MISSED (DRAW #${item.actualNum ?? '-'})`}</span>
                         </span>
-
-                        <span className={`px-2 py-0.5 rounded-md text-[8px] font-mono-tech flex items-center gap-1 border ${
-                          colorMatched 
-                            ? 'bg-emerald-950/50 border-emerald-500/40 text-emerald-300' 
-                            : 'bg-red-950/40 border-red-500/30 text-red-300'
-                        }`}>
-                          <span>COLOR: {colorMatched ? '✓ HIT' : '✗ MISS'}</span>
-                        </span>
-
-                        {numberMatched && (
-                          <span className="px-2 py-0.5 rounded-md text-[8px] font-mono-tech flex items-center gap-1 border bg-amber-950/60 border-[#ffd700]/50 text-[#ffd700] font-bold">
-                            <span>★ DIRECT NO. HIT</span>
-                          </span>
-                        )}
                       </div>
 
                       {/* Card Footer: Level Stage & Confidence */}
                       <div className="flex items-center justify-between text-[8.5px] font-mono-tech text-gray-400 pt-0.5 border-t border-pink-500/15">
-                        <span>LEVEL {item.levelStage || 1} RECOVERY</span>
-                        <span>CONFIDENCE: {item.confidence || 96}%</span>
+                        <span className="text-[#ffd700]">LEVEL {item.levelStage || 1} JACKPOT STAGE</span>
+                        <span>CONFIDENCE: {item.confidence || 99}%</span>
                       </div>
                     </div>
                   );
