@@ -1,0 +1,222 @@
+@import "tailwindcss";
+
+:root { 
+  --samurai-pink: #ff2a85; 
+  --samurai-neon-pink: #ff007f;
+  --samurai-hot-pink: #ff4097;
+  --samurai-magenta: #c20062;
+  --samurai-deep-pink: #8a0044;
+  --samurai-gold: #ffd700;
+  --samurai-cyan: #00ffcc;
+  --samurai-bg: #070209; 
+  --card-glass: rgba(22, 6, 26, 0.75); 
+  --card-glass-pink: rgba(45, 8, 38, 0.82);
+  --gold: #ffd700; 
+  --red: #ff2a55; 
+  --win: #00ff88; 
+  --violet: #9d4edd;
+  --jackpot: #ff007f;
+  --neon-blue: #00d4ff;
+  --border-pink-glow: rgba(255, 42, 133, 0.45);
+}
+
+body {
+  font-family: 'Rajdhani', sans-serif;
+  background-color: #070209;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.font-rajdhani {
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.font-mono-tech {
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* Glassmorphism Classes for prominent Background Visibility with Pink Glow */
+.samurai-glass-panel {
+  background: linear-gradient(145deg, rgba(30, 8, 32, 0.78) 0%, rgba(16, 4, 20, 0.85) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(255, 42, 133, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.65), 0 0 20px rgba(255, 42, 133, 0.18), inset 0 0 16px rgba(255, 42, 133, 0.12);
+}
+
+.samurai-glass-crimson {
+  background: linear-gradient(135deg, rgba(55, 10, 42, 0.85) 0%, rgba(32, 6, 28, 0.82) 50%, rgba(18, 4, 24, 0.88) 100%);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1.5px solid rgba(255, 42, 133, 0.55);
+  box-shadow: 0 10px 35px 0 rgba(0, 0, 0, 0.75), 0 0 25px rgba(255, 0, 127, 0.25), inset 0 0 20px rgba(255, 42, 133, 0.22);
+}
+
+.samurai-glass-gold {
+  background: linear-gradient(135deg, rgba(48, 30, 10, 0.8) 0%, rgba(26, 16, 8, 0.75) 50%, rgba(18, 10, 26, 0.82) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(255, 215, 0, 0.55);
+  box-shadow: 0 10px 35px 0 rgba(0, 0, 0, 0.7), inset 0 0 20px rgba(255, 215, 0, 0.22);
+}
+
+/* Polygonal Octagon Target Shape */
+.octagon-target {
+  clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+}
+
+/* Katana Slash Hover & Pink Glow FX */
+.katana-hover-slash {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.katana-hover-slash::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(
+    90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.4), 
+    rgba(255, 42, 133, 0.85), 
+    transparent
+  );
+  transform: skewX(-25deg);
+  transition: none;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.katana-hover-slash:hover::before {
+  left: 170%;
+  transition: left 0.65s ease-in-out;
+}
+
+.katana-hover-slash:hover {
+  transform: translateY(-1.5px);
+  border-color: rgba(255, 42, 133, 0.9) !important;
+  box-shadow: 0 0 25px rgba(255, 42, 133, 0.65), inset 0 0 14px rgba(255, 42, 133, 0.3) !important;
+}
+
+.katana-table-header {
+  background: linear-gradient(90deg, #ff2a85 0%, #d90466 50%, #800f4f 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 18px rgba(255, 42, 133, 0.45);
+}
+
+.katana-pill-big {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.25) 0%, rgba(180, 130, 0, 0.35) 100%);
+  border: 1px solid rgba(255, 215, 0, 0.7);
+  color: #ffd700;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.35);
+}
+
+.katana-pill-small {
+  background: linear-gradient(135deg, rgba(255, 42, 133, 0.25) 0%, rgba(180, 20, 90, 0.35) 100%);
+  border: 1px solid rgba(255, 42, 133, 0.7);
+  color: #ff549d;
+  box-shadow: 0 0 12px rgba(255, 42, 133, 0.35);
+}
+
+/* ========================================================================= */
+/* 3D SPHERE & HYPER-PREMIUM BALL STYLES                                     */
+/* ========================================================================= */
+.ball-3d-green {
+  background: radial-gradient(circle at 32% 28%, #80ffbf 0%, #00e676 25%, #00a844 60%, #004d1a 100%);
+  box-shadow: inset -2px -3px 6px rgba(0, 0, 0, 0.6), inset 2px 2px 5px rgba(255, 255, 255, 0.7), 0 4px 12px rgba(0, 230, 118, 0.45);
+}
+
+.ball-3d-red {
+  background: radial-gradient(circle at 32% 28%, #ff8099 0%, #ff1744 25%, #c50029 60%, #520010 100%);
+  box-shadow: inset -2px -3px 6px rgba(0, 0, 0, 0.6), inset 2px 2px 5px rgba(255, 255, 255, 0.7), 0 4px 12px rgba(255, 23, 68, 0.45);
+}
+
+.ball-3d-violet {
+  background: radial-gradient(circle at 32% 28%, #d896ff 0%, #a855f7 25%, #7928ca 60%, #35095e 100%);
+  box-shadow: inset -2px -3px 6px rgba(0, 0, 0, 0.6), inset 2px 2px 5px rgba(255, 255, 255, 0.7), 0 4px 12px rgba(168, 85, 247, 0.45);
+}
+
+.ball-3d-zero {
+  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #d896ff 15%, #ff2a55 50%, #7928ca 85%, #250330 100%);
+  box-shadow: inset -2px -3px 6px rgba(0, 0, 0, 0.6), inset 2px 2px 5px rgba(255, 255, 255, 0.7), 0 4px 14px rgba(255, 42, 85, 0.55);
+}
+
+.ball-3d-five {
+  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #d896ff 15%, #00e676 50%, #7928ca 85%, #092e16 100%);
+  box-shadow: inset -2px -3px 6px rgba(0, 0, 0, 0.6), inset 2px 2px 5px rgba(255, 255, 255, 0.7), 0 4px 14px rgba(0, 230, 118, 0.55);
+}
+
+/* Hyper-Premium 3D Number Core Badge */
+.hero-3d-chassis {
+  background: radial-gradient(circle at 50% 20%, rgba(255, 42, 133, 0.35) 0%, rgba(35, 6, 40, 0.95) 60%, rgba(10, 2, 12, 1) 100%);
+  box-shadow: 
+    0 12px 35px rgba(0, 0, 0, 0.8),
+    0 0 30px rgba(255, 42, 133, 0.6),
+    inset 0 2px 8px rgba(255, 255, 255, 0.4),
+    inset 0 -4px 12px rgba(0, 0, 0, 0.8);
+}
+
+.hero-3d-bezel {
+  background: linear-gradient(145deg, #ff2a85 0%, #ffd700 35%, #ff007f 70%, #800f4f 100%);
+  box-shadow: 0 0 25px rgba(255, 42, 133, 0.75), 0 0 45px rgba(255, 215, 0, 0.4);
+}
+
+/* Hyper Premium Katana Slash & Pulse Animations */
+@keyframes katanaGlowPulse {
+  0% { box-shadow: 0 0 15px rgba(255, 42, 133, 0.4), inset 0 0 10px rgba(255, 42, 133, 0.2); }
+  50% { box-shadow: 0 0 35px rgba(255, 42, 133, 0.8), inset 0 0 22px rgba(255, 42, 133, 0.45); }
+  100% { box-shadow: 0 0 15px rgba(255, 42, 133, 0.4), inset 0 0 10px rgba(255, 42, 133, 0.2); }
+}
+
+@keyframes slashBeam {
+  0% { transform: translateX(-150%) skewX(-25deg); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(250%) skewX(-25deg); opacity: 0; }
+}
+
+@keyframes hyperWinPulse {
+  0% { transform: scale(1); box-shadow: 0 0 15px rgba(0, 255, 136, 0.5); }
+  50% { transform: scale(1.025); box-shadow: 0 0 50px rgba(0, 255, 136, 0.9), inset 0 0 25px rgba(0, 255, 136, 0.5); }
+  100% { transform: scale(1); }
+}
+
+@keyframes hyperJackpotGlow {
+  0% { box-shadow: 0 0 25px rgba(255, 0, 127, 0.7); transform: scale(1); }
+  50% { box-shadow: 0 0 65px rgba(255, 215, 0, 0.95), inset 0 0 30px rgba(255, 0, 127, 0.6); transform: scale(1.03); }
+  100% { box-shadow: 0 0 25px rgba(255, 0, 127, 0.7); transform: scale(1); }
+}
+
+@keyframes hyperLossShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px) rotate(-0.5deg); }
+  40%, 80% { transform: translateX(8px) rotate(0.5deg); }
+}
+
+/* Custom Cyber/Samurai Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(8, 3, 12, 0.85);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ff2a85;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ffd700;
+}
+

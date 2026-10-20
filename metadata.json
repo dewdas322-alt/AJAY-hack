@@ -1,0 +1,6 @@
+{
+  "name": "Samurai Warrior V3",
+  "description": "Hyper-premium WinGo prediction matrix and VIP live console powered by Samurai Warrior V3 Quantum Neural Engine with cyber pink aesthetic.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
